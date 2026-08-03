@@ -123,3 +123,4 @@ async def factorial(number: int):
         "number": number,
         "result": result
     }
+print("Hello world")
