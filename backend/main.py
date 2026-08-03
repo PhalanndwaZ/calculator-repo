@@ -141,3 +141,19 @@ async def tangent(angle: float):
         "angle_degrees": angle,
         "result": result
     }
+@api_router.get("/percentage")
+async def percentage(part: float, whole: float):
+    if whole == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="The whole value cannot be zero"
+        )
+
+    result = (part / whole) * 100
+
+    return {
+        "operation": "percentage",
+        "part": part,
+        "whole": whole,
+        "result": result
+    }
