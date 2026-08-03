@@ -123,6 +123,8 @@ async def factorial(number: int):
         "number": number,
         "result": result
     }
+
+
 @api_router.get("/sqrt")
 async def square_root(number: float):
     if number < 0:
