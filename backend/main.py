@@ -91,3 +91,19 @@ async def sine(angle: float):
         "angle_degrees": angle,
         "result": result
     }
+@api_router.get("/tan")
+async def tangent(angle: float):
+    # Tangent is undefined at 90°, 270°, etc.
+    if math.isclose(math.cos(math.radians(angle)), 0, abs_tol=1e-10):
+        raise HTTPException(
+            status_code=400,
+            detail="Tangent is undefined for this angle"
+        )
+
+    result = math.tan(math.radians(angle))
+
+    return {
+        "operation": "tangent",
+        "angle_degrees": angle,
+        "result": result
+    }
