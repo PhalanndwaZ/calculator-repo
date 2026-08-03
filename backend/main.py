@@ -82,3 +82,12 @@ async def logarithm(number: float, base: float = 10):
         "base": base,
         "result": result
     }
+@api_router.get("/sin")
+async def sine(angle: float):
+    result = math.sin(math.radians(angle))
+
+    return {
+        "operation": "sine",
+        "angle_degrees": angle,
+        "result": result
+    }
