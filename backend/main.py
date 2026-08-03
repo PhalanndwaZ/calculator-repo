@@ -91,3 +91,18 @@ async def sine(angle: float):
         "angle_degrees": angle,
         "result": result
     }
+@api_router.get("/factorial")
+async def factorial(number: int):
+    if number < 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Factorial is only defined for non-negative integers"
+        )
+
+    result = math.factorial(number)
+
+    return {
+        "operation": "factorial",
+        "number": number,
+        "result": result
+    }
