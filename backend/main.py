@@ -121,3 +121,18 @@ async def square_root(number: float):
         "number": number,
         "result": result
     }
+@api_router.get("/reciprocal")
+async def reciprocal(number: float):
+    if number == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot calculate the reciprocal of zero"
+        )
+
+    result = 1 / number
+
+    return {
+        "operation": "reciprocal",
+        "number": number,
+        "result": result
+    }
