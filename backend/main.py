@@ -123,3 +123,43 @@ async def factorial(number: int):
         "number": number,
         "result": result
     }
+@api_router.get("/sqrt")
+async def square_root(number: float):
+    if number < 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Square root is only defined for non-negative numbers"
+        )
+
+    result = math.sqrt(number)
+
+    return {
+        "operation": "square_root",
+        "number": number,
+        "result": result
+    }
+@api_router.get("/reciprocal")
+async def reciprocal(number: float):
+    if number == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot calculate the reciprocal of zero"
+        )
+
+    result = 1 / number
+
+    return {
+        "operation": "reciprocal",
+        "number": number,
+        "result": result
+    }
+@api_router.get("/power")
+async def power(base: float, exponent: float):
+    result = base ** exponent
+
+    return {
+        "operation": "exponent",
+        "base": base,
+        "exponent": exponent,
+        "result": result
+    }
