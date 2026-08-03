@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator App</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f7fb; margin: 0; padding: 40px; }
+    .container { max-width: 520px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .hidden { display: none; }
+    .card { margin-top: 20px; }
+    input, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    button { background: #2563eb; color: white; cursor: pointer; border: none; }
+    .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .result { margin-top: 16px; font-weight: bold; color: #0f766e; }
+    .status { margin-top: 10px; color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="loginView">
+      <h2>Login with Google</h2>
+      
+      <div id="g_id_onload"
+           data-client_id="332623556051-m5071hr3u59i5aof148e6e5r81j52iuq.apps.googleusercontent.com"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleGoogleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"></div>
+      <!-- <button onclick="demoLogin()" style="margin-top: 12px; background: #0f766e;">Continue to calculator (demo mode)</button> -->
+    </div>
+
+    <div id="homeView" class="hidden">
+      <h2>Calculator</h2>
+      <div class="card">
+        <label>Number 1</label>
+        <input id="number1" type="number" step="any"  required/>
+        <label>Number 2</label>
+        <input id="number2" type="number" step="any" />
+        <div class="buttons">
+          <button onclick="handleSubtract()">Subtract</button>
+          <button >Add</button>
+          <button >Division</button>
+          <button onclick="multiply()">Multiplication</button>
+        </div>
+        <div id="result" class="result">Result will appear here.</div>
+        <div id="status" class="status"></div>
+      </div>
+    </div>
+  </div>
+
+<script src="api.js"></script>
+
+<script>
+  function showHome() {
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("homeView").classList.remove("hidden");
+  }
+
+  function showStatus(message) {
+    document.getElementById("status").textContent = message;
+  }
+
+  async function handleSubtract() {
+    showStatus(""); // Clear previous errors
+    
+    const number1 = document.getElementById("number1").value;
+    const number2 = document.getElementById("number2").value;
+
+    if (number1 === "" || number2 === "") {
+      showStatus("Please enter both numbers.");
+      return;
+    }
+
+    try {
+      // Calls http://127.0.0.1:8000/api/subtract?a=X&b=Y
+      const response = await callApi(`/subtract?a=${encodeURIComponent(number1)}&b=${encodeURIComponent(number2)}`, "GET");
+      
+      document.getElementById("result").textContent = "Result: " + response.result;
+    } catch (error) {
+      showStatus(error.message);
+    }
+  }
+
+  window.handleGoogleCredentialResponse = async function(response) {
+    try {
+      if (!response || !response.credential) {
+        throw new Error("Google sign-in did not return a credential");
+      }
+
+      // Calls http://127.0.0.1:8000/api/login
+      await callApi("/login", "POST", { id_token: response.credential });
+
+      showHome();
+    } catch (error) {
+      showStatus(error.message);
+    }
+  };
+
+async function multiply() {
+    try {
+
+        const number1 = parseFloat(document.getElementById("number1").value);
+        const number2 = parseFloat(document.getElementById("number2").value);
+
+        const response = await callApi("/multiply", "POST", {
+            number1,
+            number2
+        });
+
+        document.getElementById("result").textContent =
+            response.result;
+
+    } catch (error) {
+
+        document.getElementById("result").textContent =
+            error.message;
+
+    }
+}
+
+
+</script>
+
+</body>
+</html>
