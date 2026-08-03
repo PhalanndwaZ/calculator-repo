@@ -107,7 +107,7 @@ async def tangent(angle: float):
         "angle_degrees": angle,
         "result": result
     }
-<<<<<<< HEAD
+
 @api_router.get("/factorial")
 async def factorial(number: int):
     if number < 0:
