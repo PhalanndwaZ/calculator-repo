@@ -106,3 +106,18 @@ async def factorial(number: int):
         "number": number,
         "result": result
     }
+@api_router.get("/sqrt")
+async def square_root(number: float):
+    if number < 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Square root is only defined for non-negative numbers"
+        )
+
+    result = math.sqrt(number)
+
+    return {
+        "operation": "square_root",
+        "number": number,
+        "result": result
+    }
