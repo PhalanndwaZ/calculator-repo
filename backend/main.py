@@ -136,3 +136,13 @@ async def reciprocal(number: float):
         "number": number,
         "result": result
     }
+@api_router.get("/power")
+async def power(base: float, exponent: float):
+    result = base ** exponent
+
+    return {
+        "operation": "exponent",
+        "base": base,
+        "exponent": exponent,
+        "result": result
+    }
