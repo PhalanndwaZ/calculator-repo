@@ -60,3 +60,25 @@ app.include_router(api_router)
 frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
 
 app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+@api_router.get("/logarithm")
+async def logarithm(number: float, base: float = 10):
+    if number <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Number must be greater than 0"
+        )
+
+    if base <= 0 or base == 1:
+        raise HTTPException(
+            status_code=400,
+            detail="Base must be greater than 0 and cannot be 1"
+        )
+
+    result = math.log(number, base)
+
+    return {
+        "operation": "logarithm",
+        "number": number,
+        "base": base,
+        "result": result
+    }
