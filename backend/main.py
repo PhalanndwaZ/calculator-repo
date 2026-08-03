@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import math
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -140,7 +140,6 @@ async def tangent(angle: float):
         "angle_degrees": angle,
         "result": result
     }
->>>>>>> 4f37d14 (added tangent)
 @api_router.get("/tan")
 async def tangent(angle: float):
     # Tangent is undefined at 90°, 270°, etc.
