@@ -91,6 +91,7 @@ async def sine(angle: float):
         "angle_degrees": angle,
         "result": result
     }
+<<<<<<< HEAD
 @api_router.get("/factorial")
 async def factorial(number: int):
     if number < 0:
@@ -106,33 +107,21 @@ async def factorial(number: int):
         "number": number,
         "result": result
     }
-@api_router.get("/sqrt")
-async def square_root(number: float):
-    if number < 0:
+=======
+@api_router.get("/tan")
+async def tangent(angle: float):
+    # Tangent is undefined at 90°, 270°, etc.
+    if math.isclose(math.cos(math.radians(angle)), 0, abs_tol=1e-10):
         raise HTTPException(
             status_code=400,
-            detail="Square root is only defined for non-negative numbers"
+            detail="Tangent is undefined for this angle"
         )
 
-    result = math.sqrt(number)
+    result = math.tan(math.radians(angle))
 
     return {
-        "operation": "square_root",
-        "number": number,
+        "operation": "tangent",
+        "angle_degrees": angle,
         "result": result
     }
-@api_router.get("/reciprocal")
-async def reciprocal(number: float):
-    if number == 0:
-        raise HTTPException(
-            status_code=400,
-            detail="Cannot calculate the reciprocal of zero"
-        )
-
-    result = 1 / number
-
-    return {
-        "operation": "reciprocal",
-        "number": number,
-        "result": result
-    }
+>>>>>>> 4f37d14 (added tangent)
