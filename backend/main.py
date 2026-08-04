@@ -123,3 +123,13 @@ async def tangent(angle: float):
         "angle_degrees": angle,
         "result": result
     }
+
+@api_router.get("/cos")
+async def cosine(angle: float):
+    result = math.cos(math.radians(angle))
+
+    return {
+        "operation": "cosine",
+        "angle_degrees": angle,
+        "result": result
+    }
